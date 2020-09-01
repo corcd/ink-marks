@@ -14,6 +14,12 @@ const handlers: {
 
 const instrumented: { [key in InstrumentHandlerType]?: boolean } = {}
 
+/**
+ * 描述
+ * @date 2020-09-01
+ * @param {InstrumentHandler} handler
+ * @returns {void}
+ */
 export function addInstrumentationHandler(handler: InstrumentHandler): void {
   if (
     !handler ||
@@ -31,6 +37,12 @@ export function addInstrumentationHandler(handler: InstrumentHandler): void {
   instrument(handler.type)
 }
 
+/**
+ * 描述
+ * @date 2020-09-01
+ * @param {InstrumentHandlerType} type
+ * @returns {void}
+ */
 function instrument(type: InstrumentHandlerType): void {
   if (instrumented[type]) {
     return
@@ -56,7 +68,11 @@ function instrument(type: InstrumentHandlerType): void {
   }
 }
 
-// 结构加载完成捕捉器
+/**
+ * 结构加载完成捕捉器
+ * @date 2020-09-01
+ * @returns {void}
+ */
 function instrumentLoad(): void {
   if (!('document' in global)) {
     return
@@ -71,7 +87,11 @@ function instrumentLoad(): void {
   )
 }
 
-// 单次点击捕捉器
+/**
+ * 单次点击捕捉器
+ * @date 2020-09-01
+ * @returns {void}
+ */
 function instrumentClick(): void {
   if (!('document' in global)) {
     return
@@ -86,7 +106,11 @@ function instrumentClick(): void {
   )
 }
 
-// 双击捕捉器
+/**
+ * 双击捕捉器
+ * @date 2020-09-01
+ * @returns {void}
+ */
 function instrumentDoubleClick(): void {
   if (!('document' in global)) {
     return
@@ -101,7 +125,11 @@ function instrumentDoubleClick(): void {
   )
 }
 
-// 触摸捕捉器
+/**
+ * 触摸捕捉器
+ * @date 2020-09-01
+ * @returns {void}
+ */
 function instrumentTouch(): void {
   if (!('document' in global)) {
     return
@@ -116,6 +144,13 @@ function instrumentTouch(): void {
   )
 }
 
+/**
+ * 描述
+ * @date 2020-09-01
+ * @param {InstrumentHandlerType} type
+ * @param {any} preload
+ * @returns {void}
+ */
 function triggerHandlers(type: InstrumentHandlerType, preload: any): void {
   if (!type || !handlers[type]) {
     return

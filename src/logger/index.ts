@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-27 10:06:53
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-01 09:42:49
+ * @LastEditTime: 2020-09-01 10:45:05
  * @Description: file content
  */
 
@@ -19,14 +19,30 @@ class Logger {
     this._enabled = true
   }
 
+  /**
+   * 描述
+   * @date 2020-09-01
+   * @returns {void}
+   */
   public disable(): void {
     this._enabled = false
   }
 
+  /**
+   * 描述
+   * @date 2020-09-01
+   * @returns {void}
+   */
   public enable(): void {
     this._enabled = true
   }
 
+  /**
+   * 描述
+   * @date 2020-09-01
+   * @param {any} args
+   * @returns {void}
+   */
   public log(...args: any[]): void {
     if (!this._enabled) {
       return
@@ -36,6 +52,12 @@ class Logger {
     })
   }
 
+  /**
+   * 描述
+   * @date 2020-09-01
+   * @param {any} args
+   * @returns {void}
+   */
   public warn(...args: any[]): void {
     if (!this._enabled) {
       return
@@ -45,6 +67,12 @@ class Logger {
     })
   }
 
+  /**
+   * 描述
+   * @date 2020-09-01
+   * @param {any} args
+   * @returns {void}
+   */
   public error(...args: any[]): void {
     if (!this._enabled) {
       return
