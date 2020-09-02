@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-27 10:06:53
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-01 10:45:05
+ * @LastEditTime: 2020-09-02 09:00:30
  * @Description: file content
  */
 
@@ -10,7 +10,7 @@ import { consoleSandbox, getGlobalObject } from '../utils'
 
 const global = getGlobalObject<Window | NodeJS.Global>()
 
-const PREFIX = 'Ink-Marks Logger'
+const PREFIX = '[Inkmarks] Logger'
 
 class Logger {
   private _enabled: boolean

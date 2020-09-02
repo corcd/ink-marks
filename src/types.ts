@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 12:16:28
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-01 09:42:25
+ * @LastEditTime: 2020-09-02 11:28:16
  * @Description: file content
  */
 
@@ -112,5 +112,12 @@ export type InstrumentHandlerType =
   | 'touch'
   | 'click'
   | 'dblclick'
+  | 'beforeunload'
 
 export type InstrumentHandlerCallback = (data: any) => void
+
+export interface InformationType {
+  enterTimestamp?: number
+  leaveTimestamp?: number
+  userAgent?: string
+}

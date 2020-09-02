@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:07:47
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-01 19:19:38
+ * @LastEditTime: 2020-09-02 09:06:10
  * @Description: file content
  */
 
@@ -14,14 +14,18 @@ import { getGlobalObject } from './utils'
 const global = getGlobalObject<Window>()
 
 class Inkmarks {
-  private name: string
+  static projectName: string = 'Inkmarks'
 
   constructor() {
-    this.name = 'Inkmarks'
-    console.log(`[${this.name}] Init`)
+    console.log(`[${Inkmarks.projectName}] Init`)
   }
 
-  public init() {
+  /**
+   * 初始化
+   * @date 2020-09-02
+   * @returns {void}
+   */
+  public init(): void {
     basic.registerBasicInstrumentation()
     lifecycle.registerLifecycleInstrumentation()
     interaction.registerInteractionInstrumentation()
@@ -29,5 +33,8 @@ class Inkmarks {
 }
 
 const inkmarks = (global.INKMARKS = new Inkmarks())
+;(function () {
+  inkmarks.init()
+})()
 
 export default inkmarks

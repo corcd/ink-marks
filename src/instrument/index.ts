@@ -63,6 +63,9 @@ function instrument(type: InstrumentHandlerType): void {
     case 'dblclick':
       instrumentDoubleClick()
       break
+    case 'beforeunload':
+      instrumentBeforeunload()
+      break
     default:
       logger.warn(`unknown instrumentation type:${type}`)
   }
@@ -74,11 +77,11 @@ function instrument(type: InstrumentHandlerType): void {
  * @returns {void}
  */
 function instrumentLoad(): void {
-  if (!('document' in global)) {
+  if (!('window' in global)) {
     return
   }
 
-  global.document.addEventListener(
+  global.window.addEventListener(
     'DOMContentLoaded',
     (ev: Event): void => {
       triggerHandlers('DOMContentLoaded', ev)
@@ -93,11 +96,11 @@ function instrumentLoad(): void {
  * @returns {void}
  */
 function instrumentClick(): void {
-  if (!('document' in global)) {
+  if (!('window' in global)) {
     return
   }
 
-  global.document.addEventListener(
+  global.window.addEventListener(
     'click',
     (ev: MouseEvent): void => {
       triggerHandlers('click', ev)
@@ -112,11 +115,11 @@ function instrumentClick(): void {
  * @returns {void}
  */
 function instrumentDoubleClick(): void {
-  if (!('document' in global)) {
+  if (!('window' in global)) {
     return
   }
 
-  global.document.addEventListener(
+  global.window.addEventListener(
     'dblclick',
     (ev: MouseEvent): void => {
       triggerHandlers('dblclick', ev)
@@ -131,14 +134,28 @@ function instrumentDoubleClick(): void {
  * @returns {void}
  */
 function instrumentTouch(): void {
-  if (!('document' in global)) {
+  if (!('window' in global)) {
     return
   }
 
-  global.document.addEventListener(
+  global.window.addEventListener(
     'touchstart',
     (ev: TouchEvent): void => {
       triggerHandlers('touch', ev)
+    },
+    false
+  )
+}
+
+function instrumentBeforeunload(): void {
+  if (!('window' in global)) {
+    return
+  }
+
+  global.window.addEventListener(
+    'beforeunload',
+    (ev: Event): void => {
+      triggerHandlers('beforeunload', ev)
     },
     false
   )

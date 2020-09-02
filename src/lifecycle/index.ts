@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-26 18:13:49
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-01 19:45:57
+ * @LastEditTime: 2020-09-02 17:25:48
  * @Description: file content
  *
  */
@@ -11,6 +11,7 @@ import { addInstrumentationHandler } from '../instrument'
 import { logger } from '../logger'
 import dayjs from 'dayjs'
 import { getGlobalObject } from '../utils'
+import { reporter } from '../reporter'
 
 const global = getGlobalObject<Window>()
 
@@ -21,10 +22,13 @@ const global = getGlobalObject<Window>()
  * @returns {void}
  */
 const lifecycleEnterCallback = (data: any): void => {
-  logger.log('<lifecycleCallback>')
+  logger.log('<lifecycleEnterCallback>')
   const enterTimestamp = dayjs().unix()
   const userAgent = global.navigator.userAgent
-  // TODO 录入用户信息
+  reporter.enterInformation({
+    enterTimestamp,
+    userAgent,
+  })
 }
 
 /**
@@ -34,8 +38,14 @@ const lifecycleEnterCallback = (data: any): void => {
  * @returns {void}
  */
 const lifecycleLeaveCallback = (data: any): void => {
-  logger.log('<lifecycleCallback>')
+  logger.log('<lifecycleLeaveCallback>')
   const leaveTimestamp = dayjs().unix()
+  reporter.enterInformation(
+    {
+      leaveTimestamp,
+    },
+    true
+  )
 }
 
 /**
@@ -48,9 +58,8 @@ export function registerLifecycleInstrumentation(): void {
     callback: lifecycleEnterCallback,
     type: 'DOMContentLoaded',
   })
-  //TODO 页面退出事件
-  // addInstrumentationHandler({
-  //   callback: lifecycleLeaveCallback,
-  //   type: '*',
-  // })
+  addInstrumentationHandler({
+    callback: lifecycleLeaveCallback,
+    type: 'beforeunload',
+  })
 }
