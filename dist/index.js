@@ -1,8 +1,5 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('crypto')) :
-  typeof define === 'function' && define.amd ? define(['crypto'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Inkmarks = factory(global.require$$0));
-}(this, (function (require$$0) { 'use strict';
+var Inkmarks = (function (require$$0) {
+  'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -8149,7 +8146,7 @@
   });
 
   const configuration = {
-      REPORT_URL: 'http://localhost:8000',
+      REPORT_URL: 'https://golivec-pre.guangdianyun.tv/log/client',
       DELAY_TIME: 2000,
   };
 
@@ -8205,7 +8202,7 @@
           return false;
       }
       reportData(url = Reporter._url) {
-          const events = this._minimizeSource(this._events);
+          const events = [...this._events];
           const params = {
               information: this._information,
               events,
@@ -8227,9 +8224,10 @@
               body: JSON.stringify(params),
               cache: 'no-cache',
               headers: new Headers({
-                  'Content-Type': 'application/x-www-form-urlencoded',
+                  'Content-Type': 'application/json',
               }),
               mode: 'cors',
+              keepalive: true,
           });
       }
   }
@@ -8319,4 +8317,4 @@
 
   return inkmarks;
 
-})));
+}(crypto));

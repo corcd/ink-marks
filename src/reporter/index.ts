@@ -115,7 +115,8 @@ class Reporter {
    * @returns {void}
    */
   public reportData(url: string = Reporter._url): Promise<any> {
-    const events = this._minimizeSource(this._events)
+    // const events = this._minimizeSource(this._events)
+    const events = [...this._events]
 
     const params = {
       information: this._information,
@@ -132,7 +133,7 @@ class Reporter {
     if (global.navigator.sendBeacon && events.length < 65000) {
       console.log('Use sendbeacon')
       const headers = {
-        type: 'application/x-www-form-urlencoded',
+        type: 'application/x-www-form-urlencoded', // 不支持 application/json
       }
       const blob = new Blob([JSON.stringify(params)], headers)
       const status = global.navigator.sendBeacon(url, blob)
@@ -145,9 +146,10 @@ class Reporter {
       body: JSON.stringify(params),
       cache: 'no-cache',
       headers: new Headers({
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       }),
       mode: 'cors', // no-cors, cors, *same-origin
+      keepalive: true,
     })
   }
 }
