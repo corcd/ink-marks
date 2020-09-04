@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 12:16:28
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-02 11:28:16
+ * @LastEditTime: 2020-09-04 11:22:59
  * @Description: file content
  */
 
@@ -116,8 +116,31 @@ export type InstrumentHandlerType =
 
 export type InstrumentHandlerCallback = (data: any) => void
 
+export interface BasicInfoType {
+  host?: string
+  path?: string
+  title?: string
+  query?: any[]
+  protocol?: string
+  relative?: string
+}
+
 export interface InformationType {
   enterTimestamp?: number
   leaveTimestamp?: number
   userAgent?: string
+}
+
+export interface UserInfoType {
+  id?: number
+  username?: string | null
+}
+
+export interface ReportParamsType {
+  user: UserInfoType
+  basic: BasicInfoType
+  information: InformationType
+  events: any[]
+  session: string
+  timestamp: number
 }

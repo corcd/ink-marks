@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:48:45
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-01 18:29:30
+ * @LastEditTime: 2020-09-04 14:00:00
  * @Description: file content
  */
 
@@ -23,10 +23,38 @@ const interactionCallback = (data: any): void => {
   console.dir(data)
   logger.log('<interactionCallback>')
   if (data.target) {
-    logger.log(data.target.nodeName, data.target.className)
+    logger.log(data.target)
+    const path = String(data.path || (data.composedPath && data.composedPath()))
+    const pathArray = path.split(',')
+    const pathMap = pathArray.map((item, index) => {
+      if (item === '[object Window]') {
+        return {
+          nodeName: 'WINDOW',
+          className: null,
+        }
+      } else if (item === '[object HTMLDocument]') {
+        return {
+          nodeName: 'DOCUMENT',
+          className: null,
+        }
+      }
+
+      return {
+        nodeName:
+          (data.path || (data.composedPath && data.composedPath()))[index]
+            .nodeName || null,
+        className:
+          (data.path || (data.composedPath && data.composedPath()))[index]
+            .className || null,
+      }
+    })
+
     const preload = {
-      nodeName: data.target ? data.target.nodeName : null,
-      className: data.target ? data.target.className : null,
+      nodeName: data.target.nodeName || null,
+      className: data.target.className || null,
+      id: data.target.id || null,
+      textContent: data.target.textContent || null,
+      path: pathMap,
     }
     reporter.addData(preload)
     return

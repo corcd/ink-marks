@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 12:16:52
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-01 19:18:40
+ * @LastEditTime: 2020-09-04 10:43:45
  * @Description: file content
  */
 
@@ -131,6 +131,7 @@ export function parseUrl(
 ): {
   host?: string
   path?: string
+  query?: string
   protocol?: string
   relative?: string
 } {
@@ -152,6 +153,7 @@ export function parseUrl(
   return {
     host: match[4],
     path: match[5],
+    query: match[7],
     protocol: match[2],
     relative: match[5] + query + fragment, // everything minus origin
   }

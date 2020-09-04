@@ -4,7 +4,12 @@ import sha256 from 'crypto-js/sha256'
 import Base64 from 'crypto-js/enc-base64'
 import { getGlobalObject } from '../utils'
 // import { storage } from '../storage'
-import { InformationType } from '../types'
+import {
+  InformationType,
+  ReportParamsType,
+  UserInfoType,
+  BasicInfoType,
+} from '../types'
 import configuration from '../config/default'
 
 const global = getGlobalObject<Window>()
@@ -13,6 +18,17 @@ class Reporter {
   static _url: string = configuration.REPORT_URL
   static _delay: number = configuration.DELAY_TIME
 
+  private _user: UserInfoType = {
+    id: 0,
+    username: null,
+  }
+  private _basicInfo: BasicInfoType = {
+    host: '',
+    path: '',
+    query: [],
+    protocol: '',
+    relative: '',
+  }
   private _information: InformationType = {
     enterTimestamp: 0,
     leaveTimestamp: 0,
@@ -71,6 +87,38 @@ class Reporter {
   }
 
   /**
+   * 录入用户信息
+   * @date 2020-09-04
+   * @param {UserInfoType} userInfo
+   * @returns {void}
+   */
+  public setUser(userInfo: UserInfoType): void {
+    Object.assign(this._user, userInfo)
+    this._reportTrigger()
+  }
+
+  /**
+   * 录入页面基本信息
+   * @date 2020-09-04
+   * @param {BasicInfoType} basicInfo
+   * @param {boolean} immediate
+   * @returns {void}
+   */
+  public async enterBasicInfo(
+    basicInfo: BasicInfoType,
+    immediate: boolean = false
+  ): Promise<any> {
+    Object.assign(this._basicInfo, basicInfo)
+    if (immediate) {
+      // const leaveTimestamp = storage.get('leaveTimestamp')
+      await this.reportData()
+      return
+    }
+    this._reportTrigger()
+    return
+  }
+
+  /**
    * 录入信息
    * @date 2020-09-02
    * @param {InformationType} information
@@ -118,7 +166,9 @@ class Reporter {
     // const events = this._minimizeSource(this._events)
     const events = [...this._events]
 
-    const params = {
+    const params: ReportParamsType = {
+      user: this._user,
+      basic: this._basicInfo,
       information: this._information,
       events,
       session: this._getSession(),
@@ -131,7 +181,7 @@ class Reporter {
 
     // 尝试使用 sendbeacon
     if (global.navigator.sendBeacon && events.length < 65000) {
-      console.log('Use sendbeacon')
+      console.log('Use sendBeacon')
       const headers = {
         type: 'application/x-www-form-urlencoded', // 不支持 application/json
       }
