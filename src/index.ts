@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:07:47
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-02 09:06:10
+ * @LastEditTime: 2020-09-07 12:22:28
  * @Description: file content
  */
 
@@ -14,10 +14,19 @@ import { getGlobalObject } from './utils'
 const global = getGlobalObject<Window>()
 
 class Inkmarks {
+  private static _instance: any
+
   static projectName: string = 'Inkmarks'
 
   constructor() {
     console.log(`[${Inkmarks.projectName}] Init`)
+  }
+
+  public static get Instance(): Inkmarks {
+    if (Inkmarks._instance === null) {
+      Inkmarks._instance = new Inkmarks()
+    }
+    return Inkmarks._instance
   }
 
   /**
@@ -32,7 +41,7 @@ class Inkmarks {
   }
 }
 
-const inkmarks = (global.INKMARKS = new Inkmarks())
+const inkmarks = (global.INKMARKS = Inkmarks.Instance)
 ;(function () {
   inkmarks.init()
 })()

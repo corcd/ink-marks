@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-27 10:06:53
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-02 09:00:30
+ * @LastEditTime: 2020-09-07 12:18:21
  * @Description: file content
  */
 
@@ -13,10 +13,19 @@ const global = getGlobalObject<Window | NodeJS.Global>()
 const PREFIX = '[Inkmarks] Logger'
 
 class Logger {
+  private static _instance: any
+
   private _enabled: boolean
 
   constructor() {
     this._enabled = true
+  }
+
+  public static get Instance(): Logger {
+    if (Logger._instance === null) {
+      Logger._instance = new Logger()
+    }
+    return Logger._instance
   }
 
   /**
@@ -86,6 +95,6 @@ class Logger {
 global.__INKMARKS__ = global.__INKMARKS__ || {}
 const logger =
   (global.__INKMARKS__.logger as Logger) ||
-  (global.__INKMARKS__.logger = new Logger())
+  (global.__INKMARKS__.logger = Logger.Instance)
 
 export { logger }

@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:48:45
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-04 14:00:00
+ * @LastEditTime: 2020-09-04 14:22:30
  * @Description: file content
  */
 
@@ -12,6 +12,11 @@ import { logger } from '../logger'
 import { reporter } from '../reporter'
 
 const global = getGlobalObject<Window>()
+
+type PathMapType = {
+  nodeName: string | null
+  className: string | null
+}
 
 /**
  * 描述
@@ -26,28 +31,30 @@ const interactionCallback = (data: any): void => {
     logger.log(data.target)
     const path = String(data.path || (data.composedPath && data.composedPath()))
     const pathArray = path.split(',')
-    const pathMap = pathArray.map((item, index) => {
-      if (item === '[object Window]') {
-        return {
-          nodeName: 'WINDOW',
-          className: null,
+    const pathMap: Array<PathMapType> = pathArray.map(
+      (item: string, index: number): PathMapType => {
+        if (item === '[object Window]') {
+          return {
+            nodeName: 'WINDOW',
+            className: null,
+          }
+        } else if (item === '[object HTMLDocument]') {
+          return {
+            nodeName: 'DOCUMENT',
+            className: null,
+          }
         }
-      } else if (item === '[object HTMLDocument]') {
-        return {
-          nodeName: 'DOCUMENT',
-          className: null,
-        }
-      }
 
-      return {
-        nodeName:
-          (data.path || (data.composedPath && data.composedPath()))[index]
-            .nodeName || null,
-        className:
-          (data.path || (data.composedPath && data.composedPath()))[index]
-            .className || null,
+        return {
+          nodeName:
+            (data.path || (data.composedPath && data.composedPath()))[index]
+              .nodeName || null,
+          className:
+            (data.path || (data.composedPath && data.composedPath()))[index]
+              .className || null,
+        }
       }
-    })
+    )
 
     const preload = {
       nodeName: data.target.nodeName || null,

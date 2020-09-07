@@ -64,6 +64,12 @@ class Logger {
     constructor() {
         this._enabled = true;
     }
+    static get Instance() {
+        if (Logger._instance === null) {
+            Logger._instance = new Logger();
+        }
+        return Logger._instance;
+    }
     disable() {
         this._enabled = false;
     }
@@ -97,7 +103,7 @@ class Logger {
 }
 global$1.__INKMARKS__ = global$1.__INKMARKS__ || {};
 const logger = global$1.__INKMARKS__.logger ||
-    (global$1.__INKMARKS__.logger = new Logger());
+    (global$1.__INKMARKS__.logger = Logger.Instance);
 
 const global$2 = getGlobalObject();
 const handlers = {};
@@ -8201,6 +8207,12 @@ class Reporter {
             this._timer = null;
         }), Reporter._delay);
     }
+    static get Instance() {
+        if (Reporter._instance === null) {
+            Reporter._instance = new Reporter();
+        }
+        return Reporter._instance;
+    }
     setUser(userInfo) {
         Object.assign(this._user, userInfo);
         this._reportTrigger();
@@ -8270,19 +8282,18 @@ class Reporter {
 }
 Reporter._url = configuration.REPORT_URL;
 Reporter._delay = configuration.DELAY_TIME;
-const reporter = (global$3.__INKMARKS__.reporter = new Reporter());
+const reporter = (global$3.__INKMARKS__.reporter = Reporter.Instance);
 
 const global$4 = getGlobalObject();
 const basicCallback = (data) => {
     logger.log('<basicCallback>');
     const res = parseUrl(global$4.document.location.href);
     const queryArray = res.query ? res.query.split('&') : [];
-    const queryMap = queryArray.map(item => {
+    const queryMap = queryArray.map((item) => {
         const key = item.split('=')[0];
         const value = item.split('=')[1];
         return { [key]: value };
     });
-    console.log(queryMap);
     reporter.enterBasicInfo(Object.assign({}, res, { title: global$4.document.title, query: queryMap }));
 };
 function registerBasicInstrumentation() {
@@ -8385,6 +8396,12 @@ class Inkmarks {
     constructor() {
         console.log(`[${Inkmarks.projectName}] Init`);
     }
+    static get Instance() {
+        if (Inkmarks._instance === null) {
+            Inkmarks._instance = new Inkmarks();
+        }
+        return Inkmarks._instance;
+    }
     init() {
         registerBasicInstrumentation();
         registerLifecycleInstrumentation();
@@ -8392,7 +8409,7 @@ class Inkmarks {
     }
 }
 Inkmarks.projectName = 'Inkmarks';
-const inkmarks = (global$7.INKMARKS = new Inkmarks());
+const inkmarks = (global$7.INKMARKS = Inkmarks.Instance);
 (function () {
     inkmarks.init();
 })();

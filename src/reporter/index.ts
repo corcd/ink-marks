@@ -15,6 +15,8 @@ import configuration from '../config/default'
 const global = getGlobalObject<Window>()
 
 class Reporter {
+  private static _instance: any
+
   static _url: string = configuration.REPORT_URL
   static _delay: number = configuration.DELAY_TIME
 
@@ -84,6 +86,13 @@ class Reporter {
       clearTimeout(this._timer)
       this._timer = null
     }, Reporter._delay)
+  }
+
+  public static get Instance(): Reporter {
+    if (Reporter._instance === null) {
+      Reporter._instance = new Reporter()
+    }
+    return Reporter._instance
   }
 
   /**
@@ -204,6 +213,6 @@ class Reporter {
   }
 }
 
-const reporter = (global.__INKMARKS__.reporter = new Reporter())
+const reporter = (global.__INKMARKS__.reporter = Reporter.Instance)
 
 export { reporter }
