@@ -2,11 +2,11 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 12:16:52
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-04 10:43:45
+ * @LastEditTime: 2020-09-07 12:55:47
  * @Description: file content
  */
 
-import { blockClass, eventWithTime, EventType, listenerHandler } from './types'
+import { listenerHandler } from './types'
 
 interface InkMarksGlobal {
   INKMARKS?: any
@@ -16,7 +16,6 @@ interface InkMarksGlobal {
     id?: string
   }
   __INKMARKS__: {
-    globalEventProcessors?: any
     logger?: any
     reporter?: any
   }
