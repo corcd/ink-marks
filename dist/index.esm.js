@@ -59,7 +59,7 @@ class Logger {
         this._enabled = true;
     }
     static get Instance() {
-        if (Logger._instance === null) {
+        if (!Logger._instance) {
             Logger._instance = new Logger();
         }
         return Logger._instance;
@@ -8202,7 +8202,7 @@ class Reporter {
         }), Reporter._delay);
     }
     static get Instance() {
-        if (Reporter._instance === null) {
+        if (!Reporter._instance) {
             Reporter._instance = new Reporter();
         }
         return Reporter._instance;
@@ -8389,9 +8389,10 @@ const global$7 = getGlobalObject();
 class Inkmarks {
     constructor() {
         console.log(`[${Inkmarks.projectName}] Init`);
+        this.init();
     }
     static get Instance() {
-        if (Inkmarks._instance === null) {
+        if (!Inkmarks._instance) {
             Inkmarks._instance = new Inkmarks();
         }
         return Inkmarks._instance;
@@ -8404,8 +8405,5 @@ class Inkmarks {
 }
 Inkmarks.projectName = 'Inkmarks';
 const inkmarks = (global$7.INKMARKS = Inkmarks.Instance);
-(function () {
-    inkmarks.init();
-})();
 
 export default inkmarks;

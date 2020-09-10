@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-27 10:06:53
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-07 12:18:21
+ * @LastEditTime: 2020-09-10 12:12:33
  * @Description: file content
  */
 
@@ -17,12 +17,12 @@ class Logger {
 
   private _enabled: boolean
 
-  constructor() {
+  private constructor() {
     this._enabled = true
   }
 
   public static get Instance(): Logger {
-    if (Logger._instance === null) {
+    if (!Logger._instance) {
       Logger._instance = new Logger()
     }
     return Logger._instance

@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:07:47
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-07 12:22:28
+ * @LastEditTime: 2020-09-10 12:12:21
  * @Description: file content
  */
 
@@ -18,12 +18,13 @@ class Inkmarks {
 
   static projectName: string = 'Inkmarks'
 
-  constructor() {
+  private constructor() {
     console.log(`[${Inkmarks.projectName}] Init`)
+    this.init()
   }
 
   public static get Instance(): Inkmarks {
-    if (Inkmarks._instance === null) {
+    if (!Inkmarks._instance) {
       Inkmarks._instance = new Inkmarks()
     }
     return Inkmarks._instance
@@ -42,8 +43,5 @@ class Inkmarks {
 }
 
 const inkmarks = (global.INKMARKS = Inkmarks.Instance)
-;(function () {
-  inkmarks.init()
-})()
 
 export default inkmarks

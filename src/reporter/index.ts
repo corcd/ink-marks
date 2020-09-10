@@ -39,7 +39,7 @@ class Reporter {
   private _events: any[] = []
   private _timer: any = null
 
-  constructor() {
+  private constructor() {
     this._init()
   }
 
@@ -89,7 +89,7 @@ class Reporter {
   }
 
   public static get Instance(): Reporter {
-    if (Reporter._instance === null) {
+    if (!Reporter._instance) {
       Reporter._instance = new Reporter()
     }
     return Reporter._instance
