@@ -8408,6 +8408,9 @@ class Inkmarks {
         registerLifecycleInstrumentation();
         registerInteractionInstrumentation();
     }
+    setUser(userInfo) {
+        reporter.setUser(userInfo);
+    }
 }
 Inkmarks.projectName = 'Inkmarks';
 const inkmarks = (global$7.INKMARKS = Inkmarks.Instance);

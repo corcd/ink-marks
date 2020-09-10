@@ -8407,6 +8407,9 @@ var Inkmarks = (function (require$$0) {
           registerLifecycleInstrumentation();
           registerInteractionInstrumentation();
       }
+      setUser(userInfo) {
+          reporter.setUser(userInfo);
+      }
   }
   Inkmarks.projectName = 'Inkmarks';
   const inkmarks = (global$7.INKMARKS = Inkmarks.Instance);
