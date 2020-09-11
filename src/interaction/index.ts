@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:48:45
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-11 11:12:01
+ * @LastEditTime: 2020-09-11 12:29:25
  * @Description: file content
  */
 
@@ -10,6 +10,7 @@ import { getGlobalObject } from '../utils'
 import { addInstrumentationHandler } from '../instrument'
 import { logger } from '../logger'
 import { reporter } from '../reporter'
+import configuration from '../config/default'
 
 const global = getGlobalObject<Window>()
 
@@ -25,6 +26,7 @@ type PathMapType = {
  * @returns {void}
  */
 const interactionCallback = (data: any): void => {
+  console.log(data)
   logger.log('<interactionCallback>')
   if (data.target) {
     const path = String(data.path || (data.composedPath && data.composedPath()))
@@ -55,10 +57,11 @@ const interactionCallback = (data: any): void => {
     )
 
     const preload = {
-      nodeName: data.target.nodeName || null,
-      className: data.target.className || null,
-      id: data.target.id || null,
-      textContent: data.target.textContent || null,
+      nodeName: (data.target.nodeName || null) as string | null,
+      className: (data.target.className || null) as string | null,
+      id: (data.target.id || null) as string | null,
+      textContent: (data.target.textContent || null) as string | null,
+      dataSet: data.target.dataset[configuration['ANCHOR_NAME']] || null,
       path: pathMap,
     }
     reporter.addData(preload)

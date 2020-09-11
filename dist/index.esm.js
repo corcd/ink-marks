@@ -8155,6 +8155,7 @@ var encBase64 = createCommonjsModule(function (module, exports) {
 });
 
 const configuration = {
+    ANCHOR_NAME: 'anchor',
     REPORT_URL: 'https://golivec-pre.guangdianyun.tv/log/client',
     DELAY_TIME: 2000,
 };
@@ -8333,6 +8334,7 @@ function registerLifecycleInstrumentation() {
 
 const global$6 = getGlobalObject();
 const interactionCallback = (data) => {
+    console.log(data);
     logger.log('<interactionCallback>');
     if (data.target) {
         const path = String(data.path || (data.composedPath && data.composedPath()));
@@ -8358,10 +8360,11 @@ const interactionCallback = (data) => {
             };
         });
         const preload = {
-            nodeName: data.target.nodeName || null,
-            className: data.target.className || null,
-            id: data.target.id || null,
-            textContent: data.target.textContent || null,
+            nodeName: (data.target.nodeName || null),
+            className: (data.target.className || null),
+            id: (data.target.id || null),
+            textContent: (data.target.textContent || null),
+            dataSet: data.target.dataset[configuration['ANCHOR_NAME']] || null,
             path: pathMap,
         };
         reporter.addData(preload);
