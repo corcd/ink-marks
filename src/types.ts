@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 12:16:28
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-04 11:22:59
+ * @LastEditTime: 2020-09-11 11:03:32
  * @Description: file content
  */
 
@@ -129,6 +129,7 @@ export interface InformationType {
   enterTimestamp?: number
   leaveTimestamp?: number
   userAgent?: string
+  description?: string[]
 }
 
 export interface UserInfoType {

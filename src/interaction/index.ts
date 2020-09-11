@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:48:45
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-04 14:22:30
+ * @LastEditTime: 2020-09-11 11:12:01
  * @Description: file content
  */
 
@@ -25,10 +25,8 @@ type PathMapType = {
  * @returns {void}
  */
 const interactionCallback = (data: any): void => {
-  console.dir(data)
   logger.log('<interactionCallback>')
   if (data.target) {
-    logger.log(data.target)
     const path = String(data.path || (data.composedPath && data.composedPath()))
     const pathArray = path.split(',')
     const pathMap: Array<PathMapType> = pathArray.map(

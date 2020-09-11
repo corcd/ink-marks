@@ -2,6 +2,7 @@ import pako from 'pako'
 import dayjs from 'dayjs'
 import sha256 from 'crypto-js/sha256'
 import Base64 from 'crypto-js/enc-base64'
+import { logger } from '../logger'
 import { getGlobalObject } from '../utils'
 // import { storage } from '../storage'
 import {
@@ -19,6 +20,8 @@ class Reporter {
 
   static _url: string = configuration.REPORT_URL
   static _delay: number = configuration.DELAY_TIME
+
+  private _customUrl: string = ''
 
   private _user: UserInfoType = {
     id: 0,
@@ -82,7 +85,9 @@ class Reporter {
     if (this._timer) return
 
     this._timer = setTimeout(async (): Promise<any> => {
-      await this.reportData(Reporter._url).catch(e => console.error(e))
+      await this.reportData(this._customUrl || Reporter._url).catch(e =>
+        logger.error(e)
+      )
       clearTimeout(this._timer)
       this._timer = null
     }, Reporter._delay)
@@ -93,6 +98,16 @@ class Reporter {
       Reporter._instance = new Reporter()
     }
     return Reporter._instance
+  }
+
+  /**
+   * 自定义提交地址
+   * @date 2020-09-10
+   * @param {string} url
+   * @returns {void}
+   */
+  public setReportUrl(url: string): void {
+    this._customUrl = url
   }
 
   /**
@@ -155,7 +170,6 @@ class Reporter {
    * @returns {boolean}
    */
   public addData(data: any): boolean {
-    console.dir(data)
     if (Object.prototype.toString.call(data) === '[object Object]') {
       this._events.push(data)
       // TODO 堆栈溢出处理
@@ -171,7 +185,9 @@ class Reporter {
    * @param {string} url 提交地址
    * @returns {void}
    */
-  public reportData(url: string = Reporter._url): Promise<any> {
+  public reportData(
+    url: string = this._customUrl || Reporter._url
+  ): Promise<any> {
     // const events = this._minimizeSource(this._events)
     const events = [...this._events]
 
@@ -190,7 +206,7 @@ class Reporter {
 
     // 尝试使用 sendbeacon
     if (global.navigator.sendBeacon && events.length < 65000) {
-      console.log('Use sendBeacon')
+      logger.log('Use sendBeacon')
       const headers = {
         type: 'application/x-www-form-urlencoded', // 不支持 application/json
       }

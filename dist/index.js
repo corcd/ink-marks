@@ -8167,6 +8167,7 @@ var Inkmarks = (function (require$$0) {
   const global$3 = getGlobalObject();
   class Reporter {
       constructor() {
+          this._customUrl = '';
           this._user = {
               id: 0,
               username: null,
@@ -8201,7 +8202,7 @@ var Inkmarks = (function (require$$0) {
           if (this._timer)
               return;
           this._timer = setTimeout(() => __awaiter(this, void 0, void 0, function* () {
-              yield this.reportData(Reporter._url).catch(e => console.error(e));
+              yield this.reportData(this._customUrl || Reporter._url).catch(e => logger.error(e));
               clearTimeout(this._timer);
               this._timer = null;
           }), Reporter._delay);
@@ -8211,6 +8212,9 @@ var Inkmarks = (function (require$$0) {
               Reporter._instance = new Reporter();
           }
           return Reporter._instance;
+      }
+      setReportUrl(url) {
+          this._customUrl = url;
       }
       setUser(userInfo) {
           Object.assign(this._user, userInfo);
@@ -8239,7 +8243,6 @@ var Inkmarks = (function (require$$0) {
           });
       }
       addData(data) {
-          console.dir(data);
           if (Object.prototype.toString.call(data) === '[object Object]') {
               this._events.push(data);
               this._reportTrigger();
@@ -8247,7 +8250,7 @@ var Inkmarks = (function (require$$0) {
           }
           return false;
       }
-      reportData(url = Reporter._url) {
+      reportData(url = this._customUrl || Reporter._url) {
           const events = [...this._events];
           const params = {
               user: this._user,
@@ -8259,7 +8262,7 @@ var Inkmarks = (function (require$$0) {
           };
           this._init();
           if (global$3.navigator.sendBeacon && events.length < 65000) {
-              console.log('Use sendBeacon');
+              logger.log('Use sendBeacon');
               const headers = {
                   type: 'application/x-www-form-urlencoded',
               };
@@ -8307,9 +8310,12 @@ var Inkmarks = (function (require$$0) {
       logger.log('<lifecycleEnterCallback>');
       const enterTimestamp = dayjs_min().unix();
       const userAgent = global$5.navigator.userAgent;
+      const descriptionNodeList = global$5.document.getElementsByName('description');
+      const description = Array.from(descriptionNodeList).map((current) => current.content);
       reporter.enterInformation({
           enterTimestamp,
           userAgent,
+          description,
       });
   };
   const lifecycleLeaveCallback = (data) => {
@@ -8332,10 +8338,8 @@ var Inkmarks = (function (require$$0) {
 
   const global$6 = getGlobalObject();
   const interactionCallback = (data) => {
-      console.dir(data);
       logger.log('<interactionCallback>');
       if (data.target) {
-          logger.log(data.target);
           const path = String(data.path || (data.composedPath && data.composedPath()));
           const pathArray = path.split(',');
           const pathMap = pathArray.map((item, index) => {
@@ -8393,7 +8397,7 @@ var Inkmarks = (function (require$$0) {
   const global$7 = getGlobalObject();
   class Inkmarks {
       constructor() {
-          console.log(`[${Inkmarks.projectName}] Init`);
+          logger.log(`<Init>`);
           this.init();
       }
       static get Instance() {
@@ -8407,11 +8411,13 @@ var Inkmarks = (function (require$$0) {
           registerLifecycleInstrumentation();
           registerInteractionInstrumentation();
       }
+      setReportUrl(url) {
+          reporter.setReportUrl(url);
+      }
       setUser(userInfo) {
           reporter.setUser(userInfo);
       }
   }
-  Inkmarks.projectName = 'Inkmarks';
   const inkmarks = (global$7.INKMARKS = Inkmarks.Instance);
 
   return inkmarks;

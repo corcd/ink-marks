@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-25 11:07:47
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-10 15:16:17
+ * @LastEditTime: 2020-09-11 11:15:42
  * @Description: file content
  */
 
@@ -10,6 +10,7 @@ import * as basic from './basic'
 import * as lifecycle from './lifecycle'
 import * as interaction from './interaction'
 import { reporter } from './reporter'
+import { logger } from './logger'
 import { getGlobalObject } from './utils'
 import { UserInfoType } from './types'
 
@@ -18,10 +19,8 @@ const global = getGlobalObject<Window>()
 class Inkmarks {
   private static _instance: any
 
-  static projectName: string = 'Inkmarks'
-
   private constructor() {
-    console.log(`[${Inkmarks.projectName}] Init`)
+    logger.log(`<Init>`)
     this.init()
   }
 
@@ -41,6 +40,16 @@ class Inkmarks {
     basic.registerBasicInstrumentation()
     lifecycle.registerLifecycleInstrumentation()
     interaction.registerInteractionInstrumentation()
+  }
+
+  /**
+   * 自定义提交地址
+   * @date 2020-09-10
+   * @param {string} url
+   * @returns {void}
+   */
+  public setReportUrl(url: string): void {
+    reporter.setReportUrl(url)
   }
 
   /**

@@ -2,7 +2,7 @@
  * @Author: Whzcorcd
  * @Date: 2020-08-26 18:13:49
  * @LastEditors: Whzcorcd
- * @LastEditTime: 2020-09-02 17:25:48
+ * @LastEditTime: 2020-09-11 11:03:13
  * @Description: file content
  *
  */
@@ -25,9 +25,16 @@ const lifecycleEnterCallback = (data: any): void => {
   logger.log('<lifecycleEnterCallback>')
   const enterTimestamp = dayjs().unix()
   const userAgent = global.navigator.userAgent
+  const descriptionNodeList: Array<HTMLMetaElement> = (global.document.getElementsByName(
+    'description'
+  ) as unknown) as Array<HTMLMetaElement>
+  const description = Array.from(descriptionNodeList).map(
+    (current: HTMLMetaElement) => current.content
+  )
   reporter.enterInformation({
     enterTimestamp,
     userAgent,
+    description,
   })
 }
 
